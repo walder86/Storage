@@ -9,6 +9,9 @@ import ru.vasiliev.socks.Error.SocksError;
 import ru.vasiliev.socks.repository.Socks;
 import ru.vasiliev.socks.repository.SocksRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Slf4j
 @Service
@@ -17,31 +20,35 @@ public class SocksServices {
 
     private final SocksRepository socksRepository;
 
-    public Socks getSocks(String color, Integer cottonPath, String operation){
+    public List<Socks> getSocks(String color, Integer cottonPath, String operation){
+        List<Socks> socks = new ArrayList<>();
         for (Socks s:socksRepository.findAll()) {
             if( color.equals( s.getColor() ) ) {
                 switch (operation){
                     case "moreThan" :{
                         if(cottonPath<s.getCottonPath()){
-                            return s;
+                            socks.add(s);
                         }
                         break; }
                     case "lessThan" :{
                         if(cottonPath>s.getCottonPath()){
-                            return s;
+                            socks.add(s);
                         }
                         break; }
                     case "equal" :{
                         if(cottonPath==s.getCottonPath()){
-                            return s;
+                            socks.add(s);
                         }
                         break; }
                 }
             }
         }
-    return null;}
+    return socks;}
 
     public Socks income(Socks socks){
+        if( check(socks.getColor()) == true){
+            throw new SocksError();
+        }
         for (Socks s:socksRepository.findAll()){
             if( (socks.getColor().equals(s.getColor())) && (socks.getCottonPath().equals(s.getCottonPath())) ){
                 s.setQuantity(socks.getQuantity() + s.getQuantity());
@@ -66,6 +73,16 @@ public class SocksServices {
             }
         }
         throw new SocksError();
+    }
+
+    public boolean check(String s){
+        try{
+            double a = Double.parseDouble(s);
+        }
+        catch (NumberFormatException | NullPointerException e){
+            return false;
+        }
+        return true;
     }
 
 }
