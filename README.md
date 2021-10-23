@@ -14,9 +14,7 @@
 
 Если такой вкладки нет, то нажимаем ПКМ на файл pom.xml и выбираем add as maven project и ждём конца сборки.
 
-Должен быть запущен Docker, вбиваем в терминал/командную строку команды:
-1) docker pull vldmrvasiliev
-2) docker run -d -p 3310:3306 vldmrvasiliev/socksbd
+Должен быть запущен Docker, вбиваем в терминал/командную строку команды: docker run -d -p 3310:3306 vldmrvasiliev/socksbd
 
 Должен появистся и запуститься контейнер с БД.
 
